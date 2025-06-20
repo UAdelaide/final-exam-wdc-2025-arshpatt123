@@ -1,12 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Express</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+  <meta charset="UTF-8">
+  <title>DOG WALKING PAGE</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <style>
+    body {
+      background: url('https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif') repeat;
+      color: lime;
+      font-family: Comic Sans MS;
+      font-size: 18px;
+    }
+    .dog-card {
+      margin: 50px;
+      padding: 30px;
+      background-color: magenta;
+      border: 5px dashed cyan;
+      animation: spin 5s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .hidden-text {
+      color: yellow;
+    }
+    button {
+      padding: 30px;
+      font-size: 24px;
+      background-color: red;
+    }
+  </style>
 </head>
-
 <body>
-    <h1>Express</h1>
-    <p>Welcome to Express</p>
+  <div id="app">
+    <h1>DOG OF THE DAY!!!!!!!</h1>
+    <div class="dog-card" tabindex="0" @click="fetchDog">
+      <img :src="dogImage" alt="">
+      <p class="hidden-text">Dog name: Barky the Great and Powerful</p>
+      <p>Click here to refresh the dog. Or press tab 10 times and hit enter.</p>
+    </div>
+    <button @click="fetchDog">LOAD A NEW DOG!!!</button>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: ''
+        };
+      },
+      methods: {
+        async fetchDog() {
+          const response = await fetch('https://dog.ceo/api/breeds/image/random');
+          const data = await response.json();
+          this.dogImage = data.message;
+        }
+      },
+      mounted() {
+        this.fetchDog();
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
